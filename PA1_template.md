@@ -27,7 +27,7 @@ Loading the data
 
 ```r
 library(RCurl)
-unzip("./data.zip")
+unzip("./activity.zip")
 data<-read.csv("activity.csv")
 
 ## Making the unique days versus sum of steps table
