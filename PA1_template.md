@@ -11,17 +11,22 @@ output:
     ]
 ---
 
-We will attempt with this Peer Assessment to answer a few questions regarding data coming from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
+Reproductible Research - Peer Assessment 1
+================
+Author: Bruno Bandeira de Azevedo
+----------------
+### Date: February 14, 2015
 
-##Loading the data
+  We will attempt with this Peer Assessment to answer a few questions regarding data coming from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
-First step is to load the data files onto R to process. To do this you we used the following commands:
+Loading the data
+----------------
+
+  First step is to load the data files onto R to process. To do this you we used the following commands:
 
 
 ```r
 library(RCurl)
-URL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
-download.file(URL, destfile = "./data.zip", method="curl")
 unzip("./data.zip")
 data<-read.csv("activity.csv")
 
@@ -57,17 +62,17 @@ maxStepsForInterval <- subset(secondDataset$Interval, secondDataset$Mean==max(se
 ```
 
 
-This will retrieve all files from the server, unzip them and assign them to the data variable.
+  This will retrieve all files from the server, unzip them and assign them to the data variable.
 
-For this part we will ignore all the missing values from the data to calculate the mean of steps taken per day.
-
-
-
-##What is mean total number of steps taken per day?
+  For this part we will ignore all the missing values from the data to calculate the mean of steps taken per day.
 
 
 
-####**Total number of steps taken per day**
+What is mean total number of steps taken per day?
+----------------
+
+### Total number of steps taken per day
+
 
 
 ```r
@@ -140,7 +145,8 @@ sumData
 ```
 
 
-####**Histogram for the distribution of the Sums**
+
+### Histogram for the distribution of the Sums
 
 
 
@@ -150,7 +156,9 @@ hist(sumData$Sum, xlab="Distribution of sum of total steps taken", main="Histogr
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
-####**Mean of the Sums of steps taken per day**
+
+
+### Mean of the Sums of steps taken per day
 
 
 
@@ -161,6 +169,8 @@ mean(sumData$Sum)
 ```
 ## [1] 9354.23
 ```
+
+
 
 ####**Median of the Sums of steps taken per day**
 
@@ -175,7 +185,9 @@ median(sumData$Sum)
 ```
 
 
-##What is the average daily activity pattern?
+
+What is the average daily activity pattern?
+----------------
 
 
 ```r
@@ -185,7 +197,7 @@ plot(secondDataset$Interval, secondDataset$Mean, type="l", xlab="Interval", ylab
 ![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
 
-5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps and its value.
+  5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps and its value.
 
 
 ```r
@@ -204,11 +216,14 @@ max(secondDataset$Mean)
 ## [1] 206.1698
 ```
 
-##Imputing missing values
+
+
+Imputing missing values
+----------------
 
 Number of NAs in the data table: 
 
-(Note: I had a simple check implemented just to see if it is safe to unwrap the value of the number of TRUE values in the table)
+>(Note: I had a simple check implemented just to see if it is safe to unwrap the value of the number of TRUE values in the table)
 
 
 ```r
@@ -223,7 +238,7 @@ if (table(is.na(data[,1])+is.na(data[,2])+is.na(data[,3]))[[1]]!=nrow(data)) {
 ```
 
 
-I chose to input the missing values for the mean of the interval of 5 minutes extracted from the second data set created previously.
+  I chose to input the missing values for the mean of the interval of 5 minutes extracted from the second data set created previously.
 
 
 
@@ -248,7 +263,9 @@ sumData2<-cbind.data.frame(dateData,sumData2)
 names(sumData2)<-c("Date","Sum of steps taken with imputed values")
 ```
 
-####**Histogram for the distribution of the Sums with Imputed values**
+
+
+### Histogram for the distribution of the Sums with Imputed values
 
 
 
@@ -258,7 +275,9 @@ hist(sumData2$Sum, xlab="Sum", main="Histogram of the values of Sum of steps wit
 
 ![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
 
-####**Mean of the Sums of steps taken per day with imputed values**
+
+
+### Mean of the Sums of steps taken per day with imputed values
 
 
 
@@ -270,7 +289,9 @@ mean(sumData2$Sum)
 ## [1] 10766.19
 ```
 
-####**Median of the Sums of steps taken per day with imputed values**
+
+
+### Median of the Sums of steps taken per day with imputed values
 
 
 
@@ -282,13 +303,14 @@ median(sumData2$Sum)
 ## [1] 10766.19
 ```
 
-We can verify that the mean was far more centered. This was as expected, since we used the means for the intervals to impute the missing values, and hence, added several values that were centered around the mean into the new data set. The new median was exactly as the mean, since we used all means to impute the new values.
+  We can verify that the mean was far more centered. This was as expected, since we used the means for the intervals to impute the missing values, and hence, added several values that were centered around the mean into the new data set. The new median was exactly as the mean, since we used all means to impute the new values.
 
 
 
-##Are there differences in activity patterns between weekdays and weekends?
+Are there differences in activity patterns between weekdays and weekends?
+----------------
 
-To do this we must first categorize the values between weekdays and weekend days and then do a similar process as the one that evaluated the means for each interval, for each group.
+  To do this we must first categorize the values between weekdays and weekend days and then do a similar process as the one that evaluated the means for each interval, for each group.
 
 
 ```r
@@ -353,9 +375,13 @@ names(weekendDataset)<-c("Interval","Mean","Median", "Weekday")
 alldays<-rbind.data.frame(weekdayDataset,weekendDataset)
 ```
 
-###Panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
-We can see a slight difference in the middle of the graphic and a higher body at the higher intervals for the weekend (maybe implying people this person works out more during the weekend).
+
+
+
+### Panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+
+  We can see a slight difference in the middle of the graphic and a higher body at the higher intervals for the weekend (maybe implying people this person works out more during the weekend).
 
 
 ```r
